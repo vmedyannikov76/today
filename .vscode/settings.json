@@ -1,0 +1,5 @@
+{
+    "workbench.tree.indent": 30,
+    "pythonIndent.useTabOnHangingIndent": true,
+    "workbench.tree.renderIndentGuides": "always"
+}

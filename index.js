@@ -1,6 +1,14 @@
-import { error } from 'console';
+
 import express from 'express';
 import {engine} from 'express-handlebars';
+import path from 'path';
+import {fileURLToPath} from 'url';
+import {home, about, notFound, serverError, aboutId,api, staf} from './routes/rout.js'
+
+const __filename = fileURLToPath(import.meta.url);
+
+// 👇️ "/home/john/Desktop/javascript"
+const __dirname = path.dirname(__filename);
 
 //экземпляр экспреса
 const app = express();
@@ -11,24 +19,25 @@ app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 app.set('views', './views');
 
-//маршруты
-app.get('/', (req,res)=>{
-    res.render('home')
-})
 
+
+
+//обработка статических файлов
+app.use(express.static(__dirname + '/public/static'));
+
+
+
+//маршруты
+app.get('/',home)
+app.get('/api',api)
+app.get('/about', about)
+app.get('/about/:id', aboutId)
+app.get('/staff/:city/:name', staf)
 
 //ошибка 404 нет такой страницы
-app.use((req,res)=>{
-    res.status = '404';
-    res.render('404', {layout:'notepage'})//индивидуальный шаблон
-})
+app.use(notFound)
 //ошибка 500 сервер не отвечает
-app.use((error,req,res,next)=>{
-    console.error(error.message);
-    res.status = '500';
-    res.render('500', {layout:'notepage'})
-    
-})
+app.use(serverError)
 
 
 app.listen(PORT, ()=>{
