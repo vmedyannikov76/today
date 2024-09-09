@@ -1,4 +1,8 @@
 import { fortunes, tours, staff } from "../lib/data/info.js";
+
+
+
+
 function home(req, res) {
   res.render("home", { name: "вот так вот" });
 }
@@ -19,15 +23,27 @@ const api = (req, res) => {
   res.status = 200;
   res.json(tours);
 };
+const testForm = (req,res)=>{
+  res.render('testform')
+
+}
+const testFormPost = (req,res)=>{
+  res.render('testform', {
+    object: req.body.title
+  })
+
+}
+
+
 const staf = (req, res, next) => {
-    const cityStaff = staff[req.params.city]
-    if(!cityStaff) return next() // Если город не опознан, управление
-                                 // передастся обработчику ошибки 404.
-    const info = cityStaff[req.params.name]
-    if(!info) return next() // Если работник не опознан, управление
-                            // передастся обработчику ошибки 404.
-    res.render('staffer', info)
-  }
+  const cityStaff = staff[req.params.city];
+  if (!cityStaff) return next(); // Если город не опознан, управление
+  // передастся обработчику ошибки 404.
+  const info = cityStaff[req.params.name];
+  if (!info) return next(); // Если работник не опознан, управление
+  // передастся обработчику ошибки 404.
+  res.render("staffer", info);
+};
 
 
 
@@ -41,4 +57,4 @@ const serverError = (error, req, res, next) => {
   res.render("500", { layout: "notepage" });
 };
 
-export { home, about, notFound, serverError, aboutId, api, staf };
+export {testFormPost, home, about, notFound, serverError, aboutId, api, staf, testForm };
